@@ -16,13 +16,19 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { environment } from '../environments/environment';
+import { HeaderComponent } from './shared/header/header.component';
+import { FooterComponent } from './shared/footer/footer.component';
+import { InstitutionsComponent } from './pages/institutions/institutions.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomePageComponent,
     InnovationsPageComponent,
-    CgiarEntityPageComponent
+    CgiarEntityPageComponent,
+    HeaderComponent,
+    FooterComponent,
+    InstitutionsComponent
   ],
   imports: [
     BrowserModule,

@@ -1,7 +1,7 @@
 {
   "/api/*": {
-    "target": "https://clarisa.cgiar.org",
+    "target": "http://marlodev.ciat.cgiar.org",
     "secure": false,
-    "changeOrigin": true,
+    "logLevel": "debug"
   }
 }

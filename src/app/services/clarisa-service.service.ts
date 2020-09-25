@@ -9,7 +9,7 @@ import { map, catchError, tap } from 'rxjs/operators';
 // https://172.22.42.118:8443/marlo-web/api/index.html#/
 // http://marlodev.ciat.cgiar.org/api
 // https://172.22.42.118:8443/marlo-web/api
-const endpoint = 'http://marlodev.ciat.cgiar.org/api';
+const endpoint = '/api/';
 // Proxy
 const proxyURL = 'http://localhost/issuesRoadmap/public/api/clarisa'
 
@@ -26,7 +26,7 @@ const httpOptions = {
 })
 export class ClarisaServiceService {
 
-  proxyActive:Boolean = true;
+  proxyActive:Boolean = false;
 
   constructor(private http: HttpClient) {
     console.log('CLARISA Service ...');
@@ -39,8 +39,8 @@ export class ClarisaServiceService {
 
   private getQuery(query:string){
     let endQuery = endpoint + '/' + query;
-    if(this.proxyActive) endQuery = proxyURL + '/getProxy?url=' + encodeURIComponent(endQuery);
-    return this.http.get(endQuery, httpOptions);
+    // if(this.proxyActive) endQuery = proxyURL + '/getProxy?url=' + encodeURIComponent(endQuery);
+    return this.http.get(endQuery);
   }
 
   private postQuery(query:string, data:any){
@@ -136,5 +136,7 @@ export class ClarisaServiceService {
     return this.getQuery('institutions').pipe(
       map(this.extractData));
   }
+  headers = new HttpHeaders();
+
 
 }
