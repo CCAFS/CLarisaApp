@@ -95,6 +95,11 @@ export class ClarisaServiceService {
       map(this.extractData));
   }
 
+  createInstitutions(cgiarEntity:string, Institution:any): Observable<any>{
+    return this.postQuery(cgiarEntity + '/institutions/institution-requests', Institution).pipe(
+      map(this.extractData));
+  }
+
   // Control Lists
 
   getCgiarEntities(): Observable<any> {

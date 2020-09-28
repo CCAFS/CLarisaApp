@@ -1,3 +1,55 @@
 <div class="container">
-  <h1>institutions</h1>
+  
+  <button (click)="postAllInstitutions()" type="button" class="btn  btn-outline-dark">Post all institutions</button>
+  <button *ngIf="institutions[0]" (click)="exportFile()" type="button" class="excel btn btn-outline-success">Generate Excel</button>
+  <h1 style="text-align: center;">Institutions</h1>
+
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+    </div>
+    <div class="custom-file">
+      <input (change)="onFileChange($event)"  type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+      <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+    </div>
+  </div>
+
+  <table class="table">
+    <thead >
+      <tr>
+        <!-- <th scope="col">#</th> -->
+        <th scope="col">IdRequest</th>
+        <th scope="col">Institutionname</th>
+        <!-- <th scope="col">Json view</th>
+        <th scope="col">is Json</th> -->
+        <!-- <th scope="col">Handle</th> -->
+      </tr>
+    </thead>
+    <tbody >
+      <tr *ngFor="let institution of institutions; let i = index" >
+        <td >{{institution.IdRequest || "null"}}</td>
+        <td [ngClass]="{'error': institution.IdRequest == undefined, 'success': true}">{{institution.Institutionname || "null"}}</td>
+        <!-- <th scope="row">{{i}}</th> -->
+        <!-- <td *ngIf="i>0">{{row[0] || "null"}}</td>
+        <td *ngIf="i >0">{{row[9] || "null"}}</td>
+        <td *ngIf="i >0">  
+          <p><strong> acronym: {{strjson(row[9]).acronym}}</strong>  </p>
+          
+          <p> <strong> externalUserComments:</strong> {{strjson(row[9]).externalUserComments}} </p>
+          <p><strong> externalUserMail:</strong>  {{strjson(row[9]).externalUserMail}} </p>
+          <p><strong> externalUserName: </strong> {{strjson(row[9]).externalUserName}} </p>
+          <p><strong> hqCountryIso:</strong>  {{strjson(row[9]).hqCountryIso}} </p>
+          <p><strong> institutionTypeCode: </strong> {{strjson(row[9]).institutionTypeCode}} </p>
+          <p><strong> name:</strong>  {{strjson(row[9]).name}} </p>
+          <p><strong> websiteLink:</strong>  {{strjson(row[9]).websiteLink}} </p>
+        </td> -->
+        <!-- <td>yes</td> -->
+      </tr>
+    </tbody>
+  </table>
+
+
 </div>
+
+
+

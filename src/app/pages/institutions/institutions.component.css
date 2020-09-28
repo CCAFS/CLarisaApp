@@ -1,0 +1,15 @@
+.container {padding:20px;}
+.form-control {width:120px;}
+.popover {max-width:400px;}
+
+button.excel{
+    margin-left: 10px;
+}
+
+.error{
+color: red;
+}
+
+.success{
+color: green;
+}
