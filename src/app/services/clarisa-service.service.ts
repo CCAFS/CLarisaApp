@@ -13,13 +13,18 @@ const endpoint = '/api/';
 // Proxy
 const proxyURL = 'http://localhost/issuesRoadmap/public/api/clarisa'
 
-const httpOptions = {
-  headers: new HttpHeaders({
-    'Content-Type':  'application/json',
-    'Authorization': 'Basic bWFybG9zYWRtaW46NjcyMzY0Ng=='
-  })
-};
-
+// const httpOptions = {
+//   headers: new HttpHeaders({
+//     'Content-Type':  'application/json',
+//     'Authorization': 'Basic bWFybG9zYWRtaW46NjcyMzY0Ng=='
+//   })
+// };
+// const httpOptions = {
+//   headers: new HttpHeaders({
+//     'Content-Type':  'application/json',
+//     'Authorization': 'Basic '+ window.btoa("marlosadmin:6723646")
+//   })
+// };
 
 @Injectable({
   providedIn: 'root'
@@ -41,26 +46,29 @@ export class ClarisaServiceService {
     let endQuery = endpoint + '/' + query;
     // if(this.proxyActive) endQuery = proxyURL + '/getProxy?url=' + encodeURIComponent(endQuery);
     return this.http.get(endQuery);
+    // return this.http.get(endQuery,httpOptions);
   }
 
   private postQuery(query:string, data:any){
     let endQuery = endpoint + '/' + query;
     if(this.proxyActive) endQuery = proxyURL + '/postProxy?url=' + encodeURIComponent(endQuery);
-    return this.http.post(endQuery, data, httpOptions).pipe(
+    return this.http.post(endQuery, data).pipe(
       map(this.extractData));
+    // return this.http.post(endQuery, data, httpOptions).pipe(
+    //   map(this.extractData));
   }
 
   private putQuery(query:string, data:any){
     let endQuery = endpoint + '/' + query;
     if(this.proxyActive) endQuery = proxyURL + '/putProxy?url=' + encodeURIComponent(endQuery);
-    return this.http.put(endQuery, data, httpOptions).pipe(
+    return this.http.put(endQuery, data).pipe(
       map(this.extractData));
   }
 
   private deteteQuery(query:string){
     let endQuery = endpoint + '/' + query;
     if(this.proxyActive) endQuery = proxyURL + '/deleteProxy?url=' + encodeURIComponent(endQuery);
-    return this.http.delete(endQuery , httpOptions).pipe(
+    return this.http.delete(endQuery ).pipe(
       map(this.extractData));
   }
 

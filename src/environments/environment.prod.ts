@@ -8,5 +8,9 @@ export const environment = {
     storageBucket: "clarisa-testing-app.appspot.com",
     messagingSenderId: "209124284302",
     appId: "1:209124284302:web:1eb8d6e34e66c7474f36df"
+  },
+  userData:{
+    user: 'marlosadmin',
+    password:'6723646'
   }
 };

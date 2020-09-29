@@ -29,9 +29,9 @@ export class InstitutionsComponent implements OnInit {
   constructor(private _clarisaService: ClarisaServiceService) { }
 
   ngOnInit() {
-    // this._clarisaService.getInstitutions().subscribe(resp=>{
-    //   console.log(resp);
-    // })
+    this._clarisaService.getInstitutions().subscribe(resp=>{
+      console.log(resp);
+    })
 
   }
 
