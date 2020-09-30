@@ -12,7 +12,7 @@ declare var $;
 export class InstitutionsComponent implements OnInit {
   rows: [][];
   institutions = [];
-
+rest=0;
   test = {
     name: "test2",
     acronym: "test2",
@@ -73,14 +73,14 @@ export class InstitutionsComponent implements OnInit {
       console.log("Rows normal");
       console.log(this.rows);
       this.structureJson(this.rows);
-
+      this.validateRest();
       // console.log(this.rows["0"]["9"]);
       // console.log(JSON.parse(this.rows["0"]["9"]));
     };
     reader.readAsBinaryString(target.files[0]);
+   
   }
 
-  pushInstitution(item, index) {}
   structureJson(rows) {
     let first = false;
     let coide = 0;
@@ -127,20 +127,38 @@ export class InstitutionsComponent implements OnInit {
       };
 
       // console.log(this.strjson(inst.json));
-      if (inst.IdRequest == undefined) {
-        this._clarisaService
-          .createInstitutions("RTB", test)
-          .subscribe((resp) => {
-            console.log(resp);
-            inst.IdRequest = resp.id;
-          });
+      if (inst.IdRequest == undefined || inst.IdRequest == ""|| inst.IdRequest == " ") {
+        let random = Math.floor(Math.random() * (5 - 0)) + 0;
+        console.log(random);
+        if(random == 0){
+          inst.IdRequest = undefined;
+        }else{
+          inst.IdRequest = random;
+        }
+        
+        // this._clarisaService
+        //   .createInstitutions("RTB", test)
+        //   .subscribe((resp) => {
+        //     console.log(resp);
+        //     inst.IdRequest = resp.id;
+        //   });
       } else {
         console.log("Ya se envío");
-        console.log(test);
+        console.log(test.name);
       }
     });
+    console.log(this.institutions);
+    this.validateRest();
   }
-
+  
+validateRest(){
+  this.rest =0;
+    this.institutions.forEach((inst) => {
+         if(inst.IdRequest == undefined || inst.IdRequest == ""|| inst.IdRequest == " "){
+           this.rest++;
+         }
+    });
+}
   AceptAllInstitutions() {
     this.institutions.forEach((inst) => {
          console.log(inst.Institutionname);

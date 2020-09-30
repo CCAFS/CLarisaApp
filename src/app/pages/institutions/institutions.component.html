@@ -3,8 +3,10 @@
   <button *ngIf="institutions[0]" (click)="postAllInstitutions()" type="button" class="btn  btn-outline-dark">Post all institutions</button>
   <button *ngIf="institutions[0]" (click)="exportFile()" type="button" class="excel btn btn-outline-success">Generate Excel</button>
   <button (click)="AceptAllInstitutions()" type="button" class="excel btn btn-outline-info">Reject All</button>
-  <button (click)="reject()" type="button" class="excel btn btn-outline-success">Reject one</button>
-  <h1 style="text-align: center;">Institutions</h1>
+  <button (click)="reject()" type="button" class="excel btn btn-outline-info">Reject one</button>
+  <h1 style="text-align: center;" >Institutions 
+     <span *ngIf="institutions[0]" [ngClass]="{'error': rest > 0, 'success': rest <= 0}">rest: {{rest}}</span>
+    </h1>
 
   <div class="input-group mb-3">
     <div class="input-group-prepend">
@@ -30,7 +32,11 @@
     <tbody >
       <tr *ngFor="let institution of institutions; let i = index" >
         <td >{{institution.IdRequest || "null"}}</td>
-        <td [ngClass]="{'error': institution.IdRequest == undefined, 'success': true}">{{institution.Institutionname || "null"}}</td>
+        <td [ngClass]="
+        {
+          'error': institution.IdRequest == undefined ,
+          'success': institution.IdRequest != undefined 
+        }">{{institution.Institutionname || "null"}}</td>
         <!-- <th scope="row">{{i}}</th> -->
         <!-- <td *ngIf="i>0">{{row[0] || "null"}}</td>
         <td *ngIf="i >0">{{row[9] || "null"}}</td>
