@@ -13,14 +13,6 @@ export class InterceptorService implements HttpInterceptor{
   constructor() { }
 
   intercept(req: HttpRequest<any>,next: HttpHandler):Observable<HttpEvent<any>>{
-
-    // const httpOptions = {
-    //   headers: new HttpHeaders({
-    //     'Content-Type':  'application/json',
-    //     'Authorization': 'Basic '+ window.btoa("marlosadmin:6723646")
-    //   })
-    // };
-
     const headers =  new HttpHeaders({
       'Content-Type':  'application/json',
       'Authorization': 'Basic '+ window.btoa(environment.userData.user+":"+environment.userData.password)

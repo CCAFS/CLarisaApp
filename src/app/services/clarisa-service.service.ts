@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
 
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 // const endpoint = 'https://clarisa.cgiar.org/api';
 // Proxy http://localhost/issuesRoadmap/public/api/proxy/?url=
 // https://172.22.42.118:8443/marlo-web/api/index.html#/
 // http://marlodev.ciat.cgiar.org/api
 // https://172.22.42.118:8443/marlo-web/api
-const endpoint = '/api/';
+const endpoint = '/api';
 // Proxy
 const proxyURL = 'http://localhost/issuesRoadmap/public/api/clarisa'
 
@@ -106,6 +107,30 @@ export class ClarisaServiceService {
   createInstitutions(cgiarEntity:string, Institution:any): Observable<any>{
     return this.postQuery(cgiarEntity + '/institutions/institution-requests', Institution).pipe(
       map(this.extractData));
+  }
+
+  AcceptOrRejectInstitutions(cgiarEntity:string, Institution:any, InstitutionId:any): Observable<any>{
+    // /{CGIAREntity}/institutions/accept-institution-request/{code}
+
+    const headers =  new HttpHeaders({
+      'Content-Type':  'application/json',
+      'Authorization': 'Basic '+ window.btoa(environment.userData.user+":"+environment.userData.password)
+    })
+ 
+    const params = new HttpParams()
+       .set('accept', "false")
+       .set('justification'," ");
+    
+  
+     return this.http.post(endpoint+'/'+cgiarEntity + '/institutions/accept-institution-request/'+InstitutionId, Institution,{'headers':headers, 'params': params})
+        
+    // return this.http.post(endQuery, data).pipe(
+    //   map(this.extractData));
+
+    // return this.postQuery(cgiarEntity + '/institutions/accept-institution-request/'+InstitutionId, Institution).pipe(
+    //   map(this.extractData));
+
+      // http://marlodev.ciat.cgiar.org/api/RTB/institutions/accept-institution-request/5353?accept=false&justification=%20
   }
 
   // Control Lists
