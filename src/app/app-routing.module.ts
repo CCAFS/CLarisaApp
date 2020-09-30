@@ -7,7 +7,7 @@ import { CgiarEntityPageComponent } from './pages/cgiar-entity-page/cgiar-entity
 import { InstitutionsComponent } from './pages/institutions/institutions.component';
 
 const routes: Routes = [
-  { path: '', component: HomePageComponent },
+  { path: '', component: InstitutionsComponent },
   { path: 'home', component: HomePageComponent },
   { path: 'institutions', component: InstitutionsComponent },
   { path: 'publications:entityAcronym', component: CgiarEntityPageComponent },

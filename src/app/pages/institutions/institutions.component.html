@@ -1,8 +1,8 @@
 <div class="container">
   
-  <button (click)="postAllInstitutions()" type="button" class="btn  btn-outline-dark">Post all institutions</button>
+  <button *ngIf="institutions[0]" (click)="postAllInstitutions()" type="button" class="btn  btn-outline-dark">Post all institutions</button>
   <button *ngIf="institutions[0]" (click)="exportFile()" type="button" class="excel btn btn-outline-success">Generate Excel</button>
-  <button (click)="AceptAllInstitutions()" type="button" class="excel btn btn-outline-success">Reject All</button>
+  <button (click)="AceptAllInstitutions()" type="button" class="excel btn btn-outline-info">Reject All</button>
   <button (click)="reject()" type="button" class="excel btn btn-outline-success">Reject one</button>
   <h1 style="text-align: center;">Institutions</h1>
 

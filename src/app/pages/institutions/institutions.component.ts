@@ -148,18 +148,12 @@ export class InstitutionsComponent implements OnInit {
   }
 
   exportFile() {
-    /* starting from this data */
-    var data = [
-      { name: "Barack Obama", pres: 44 },
-      { name: "Donald Trump", pres: 45 },
-    ];
-
     /* generate a worksheet */
     var ws = XLSX.utils.json_to_sheet(this.institutions);
 
     /* add to workbook */
     var wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Presidents");
+    XLSX.utils.book_append_sheet(wb, ws, "Institutions");
 
     /* write workbook and force a download */
     XLSX.writeFile(wb, "sheetjs.xlsx");
