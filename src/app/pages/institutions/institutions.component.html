@@ -1,19 +1,38 @@
 <div class="container">
 
+
+
+
+
   <button *ngIf="institutions[0]" (click)="postAllInstitutions()" type="button" class="btn  btn-outline-dark">Post all
     institutions</button>
   <button *ngIf="institutions[0]" (click)="exportFile()" type="button" class="excel btn btn-outline-success">Generate
     Excel</button>
-  <button (click)="AceptAllInstitutions()" type="button" class="excel btn btn-outline-info">Reject All</button>
+  <button (click)="AceptAllInstitutions()" type="button" class="excel btn btn-outline-info">Acept All</button>
   <button (click)="reject()" type="button" class="excel btn btn-outline-info">Reject one</button>
-  <h1 style="text-align: center;">Institutions
+  <div class="row">
+    <div class="col-sm">
+      <h1 style="text-align: center;">Institutions
 
-  </h1>
+      </h1>
+    
+      <p  style="text-align: center;">
+        <span *ngIf="institutions[0]" > Total Institutions: {{institutions.length}}</span>
+         <span *ngIf="institutions[0]" [ngClass]="{'error': rest > 0, 'success': rest <= 0}">  -  rest: {{rest}}</span>
+        <span *ngIf="institutions[0]" class="success">  -  with code: {{institutions.length - rest}}</span></p>
+    </div>
+    <div class="col-sm">
+      <h1 style="text-align: center;">CRP: {{crp}}
 
-  <p  style="text-align: center;">
-    <span *ngIf="institutions[0]" > Total Institutions: {{institutions.length}}</span>
-     <span *ngIf="institutions[0]" [ngClass]="{'error': rest > 0, 'success': rest <= 0}">  -  rest: {{rest}}</span>
-    <span *ngIf="institutions[0]" class="success">  -  with code: {{institutions.length - rest}}</span></p>
+      </h1>
+    
+      <p  style="text-align: center;">
+        <span *ngIf="institutions[0]" > Total Institutions: {{institutions.length}}</span>
+         <span *ngIf="institutions[0]" [ngClass]="{'error': rest > 0, 'success': rest <= 0}">  -  without accepting: {{WoAcept}}</span>
+        <span *ngIf="institutions[0]" class="success">  -  accepted: {{institutions.length - WoAcept}}</span></p>
+    </div>
+
+  </div>
 
   <div class="input-group mb-3">
     <div class="input-group-prepend">

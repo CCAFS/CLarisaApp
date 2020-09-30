@@ -46,6 +46,7 @@ export class ClarisaServiceService {
   private getQuery(query:string){
     let endQuery = endpoint + '/' + query;
     // if(this.proxyActive) endQuery = proxyURL + '/getProxy?url=' + encodeURIComponent(endQuery);
+    console.log(endQuery);
     return this.http.get(endQuery);
     // return this.http.get(endQuery,httpOptions);
   }
@@ -95,6 +96,11 @@ export class ClarisaServiceService {
 
   getInnovationByID(cgiarEntity:string, id:number, phaseName:string, phaseYear:number): Observable<any> {
     return this.getQuery(cgiarEntity + '/innovations/' + id + '?phase=' + phaseName + '&year=' + phaseYear).pipe(
+      map(this.extractData));
+  }
+
+  getInstitutionsRequestsByCgiarEntity(cgiarEntity:string): Observable<any> {
+    return this.getQuery(cgiarEntity +'/institutions/institution-all-requests').pipe(
       map(this.extractData));
   }
 
@@ -174,6 +180,8 @@ export class ClarisaServiceService {
     return this.getQuery('institutions').pipe(
       map(this.extractData));
   }
+
+
   headers = new HttpHeaders();
 
 
