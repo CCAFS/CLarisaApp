@@ -99,6 +99,7 @@ rest=0;
           clean2: inst[8],
           Institutiontypecode: inst[9],
           json: inst[10],
+          status: inst[11],
         };
         // console.log(inst);
         this.institutions.push(institution);
@@ -161,8 +162,20 @@ validateRest(){
 }
   AceptAllInstitutions() {
     this.institutions.forEach((inst) => {
-         console.log(inst.Institutionname);
+
+      if (inst.status == undefined && inst.IdRequest != undefined) {
+        console.log("Codigo "+inst.IdRequest);
+        let random = Math.floor(Math.random() * (5 - 0)) + 0;
+        console.log(random);
+        if(random == 0){
+          inst.status = undefined;
+        }else{
+          inst.status = true;
+        }
+      }
+
     });
+    console.log(this.institutions);
   }
 
   exportFile() {
