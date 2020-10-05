@@ -28,7 +28,7 @@
     
       <p  style="text-align: center;">
         <span *ngIf="institutions[0]" > Total Institutions: {{institutions.length}}</span>
-         <span *ngIf="institutions[0]" [ngClass]="{'error': rest > 0, 'success': rest <= 0}">  -  without accepting: {{WoAcept}}</span>
+         <span *ngIf="institutions[0]" [ngClass]="{'error': WoAcept > 0, 'success': WoAcept <= 0}">  -  without accepting: {{WoAcept}}</span>
         <span *ngIf="institutions[0]" class="success">  -  accepted: {{institutions.length - WoAcept}}</span></p>
     </div>
 
