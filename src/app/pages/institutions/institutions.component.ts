@@ -10,6 +10,7 @@ declare var $;
   styleUrls: ["./institutions.component.css"],
 })
 export class InstitutionsComponent implements OnInit {
+  institutionsget:any;
   rows: [][];
   institutions = [];
   crp = 'RTB';
@@ -26,7 +27,12 @@ export class InstitutionsComponent implements OnInit {
     externalUserComments: "test2",
   };
   constructor(private _clarisaService: ClarisaServiceService) { }
-
+  rejectAllGet(){
+    this.institutionsget.forEach((inst) => {
+      // console.log(inst.id);
+      this.reject(inst.id);
+    })
+  }
   ngOnInit() {
     setInterval(
       ()=>{ 
@@ -34,21 +40,16 @@ export class InstitutionsComponent implements OnInit {
   }, 1000);
     this._clarisaService.getInstitutionsRequestsByCgiarEntity(this.crp).subscribe((resp) => {
       console.log(resp);
+      this.institutionsget = resp;
     });
   }
-  reject() {
+  reject(id) {
 
 
 
 
     this._clarisaService
-      .AcceptOrRejectInstitutions(this.crp, "", 6237)
-      .subscribe((resp) => {
-        console.log(resp);
-      });
-
-      this._clarisaService
-      .AcceptOrRejectInstitutions(this.crp, "", 6244)
+      .AcceptOrRejectInstitutions(this.crp, "", id)
       .subscribe((resp) => {
         console.log(resp);
       });
@@ -130,8 +131,12 @@ export class InstitutionsComponent implements OnInit {
     // console.log(this.institutions);
   }
   postAllInstitutions() {
+   
+      let timeseg=0;
+ 
     this.institutions.forEach((inst) => {
-      
+      timeseg++;
+      setTimeout(() => {
       let test = {
         name: this.strjson(inst.json).name,
         acronym: this.strjson(inst.json).acronym,
@@ -145,14 +150,15 @@ export class InstitutionsComponent implements OnInit {
 
       // console.log(this.strjson(inst.json));
       if (inst.IdRequest == undefined || inst.IdRequest == "" || inst.IdRequest == " ") {
-        let random = Math.floor(Math.random() * (7 - 0)) + 0;
+        let random = Math.floor(Math.random() * (10 - 0)) + 0;
         // console.log(random);
         // if (random == 0) {
         //   inst.IdRequest = undefined;
         // } else {
         //   inst.IdRequest = random;
         // }
-        if (random != 0) {
+        // if (random != 0) {
+        if (true) {
         ///////////////
         this._clarisaService
           .createInstitutions(this.crp, test)
@@ -162,8 +168,10 @@ export class InstitutionsComponent implements OnInit {
             console.log(resp.id + " subido");
             this.validateRest();
 
-            let random2 = Math.floor(Math.random() * (5 - 0)) + 0;
-            if (random2 != 0) {
+            let random2 = Math.floor(Math.random() * (10 - 0)) + 0;
+            // if (random2 != 0) {
+              if (true) {
+              
               //////////////////
             console.log("rechazando: "+inst.IdRequest);
             this._clarisaService
@@ -191,6 +199,9 @@ export class InstitutionsComponent implements OnInit {
         // console.log("Ya se envío");
         // console.log(test.name);
       }
+    }, timeseg*500);
+
+
     });
     console.log(this.institutions);
     this.validateRest();
