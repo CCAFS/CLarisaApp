@@ -34,7 +34,7 @@ export class InstitutionsComponent implements OnInit {
   }
   reject() {
     this._clarisaService
-      .AcceptOrRejectInstitutions(this.crp, "", 5361)
+      .AcceptOrRejectInstitutions(this.crp, "", 5243)
       .subscribe((resp) => {
         console.log(resp);
       });
@@ -126,19 +126,33 @@ export class InstitutionsComponent implements OnInit {
 
       // console.log(this.strjson(inst.json));
       if (inst.IdRequest == undefined || inst.IdRequest == "" || inst.IdRequest == " ") {
-        let random = Math.floor(Math.random() * (5 - 0)) + 0;
-        console.log(random);
-        if (random == 0) {
-          inst.IdRequest = undefined;
-        } else {
-          inst.IdRequest = random;
-        }
+        // let random = Math.floor(Math.random() * (5 - 0)) + 0;
+        // console.log(random);
+        // if (random == 0) {
+        //   inst.IdRequest = undefined;
+        // } else {
+        //   inst.IdRequest = random;
+        // }
 
         this._clarisaService
           .createInstitutions(this.crp, test)
           .subscribe((resp) => {
             console.log(resp);
             inst.IdRequest = resp.id;
+            console.log(resp.id + " subido");
+
+
+            console.log("rechazando: "+inst.IdRequest);
+            this._clarisaService
+            .AcceptOrRejectInstitutions(this.crp, "", inst.IdRequest)
+            .subscribe((resp) => {
+              console.log(resp);
+              console.log(inst.IdRequest +" rechazado: ");
+              inst.status = true;
+            });
+
+
+
           });
       } else {
         console.log("Ya se envío");
@@ -162,15 +176,24 @@ export class InstitutionsComponent implements OnInit {
     this.institutions.forEach((inst) => {
 
       if (inst.status == undefined && inst.IdRequest != undefined) {
-        console.log("Codigo " + inst.IdRequest);
-        let random = Math.floor(Math.random() * (5 - 0)) + 0;
-        console.log(random);
-        if (random == 0) {
-          inst.status = undefined;
-        } else {
+        // console.log("Codigo " + inst.IdRequest);
+        // let random = Math.floor(Math.random() * (5 - 0)) + 0;
+        // console.log(random);
+        // if (random == 0) {
+        //   inst.status = undefined;
+        // } else {
+        //   inst.status = true;
+        //   this.WoAcept++;
+        // }
+       console.log("rechazando: "+inst.IdRequest);
+        this._clarisaService
+        .AcceptOrRejectInstitutions(this.crp, "", inst.IdRequest)
+        .subscribe((resp) => {
+          console.log(resp);
+          console.log(inst.IdRequest +" rechazado: ");
           inst.status = true;
-          this.WoAcept++;
-        }
+        });
+
       }
 
     });
