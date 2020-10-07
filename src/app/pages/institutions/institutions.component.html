@@ -6,11 +6,13 @@
 
   <button *ngIf="institutions[0]" (click)="postAllInstitutions()" type="button" class="btn  btn-outline-dark">Post all
     institutions</button>
+    <button *ngIf="institutions[0]" (click)="AceptAllInstitutions()" type="button" class="excel btn btn-outline-info">Acept All</button>
   <button *ngIf="institutions[0]" (click)="exportFile()" type="button" class="excel btn btn-outline-success">Generate
     Excel</button>
-  <button (click)="AceptAllInstitutions()" type="button" class="excel btn btn-outline-info">Acept All</button>
-  <button (click)="reject()" type="button" class="excel btn btn-outline-info">Reject one</button>
-  <button (click)="rejectAllGet()" type="button" class="excel btn btn-outline-danger">Reject All on get</button>
+  
+  <!-- <button (click)="reject()" type="button" class="excel btn btn-outline-info">Reject one</button> -->
+  <button (click)="exportFilefromStorage()" type="button" class="excel btn btn-outline-danger">Export File fromStorage</button>
+  <!-- <button (click)="rejectAllGet()" type="button" class="excel btn btn-outline-danger">Reject All on get</button> -->
   <div class="row">
     <div class="col-sm">
       <h1 style="text-align: center;">Institutions
@@ -53,7 +55,7 @@
         <!-- <th scope="col">#</th> -->
         <th scope="col">IdRequest</th>
         <th scope="col">Institutionname</th>
-        <th scope="col">status</th>
+        <th scope="col">Accepted</th>
         <!-- <th scope="col">Json view</th>
         <th scope="col">is Json</th> -->
         <!-- <th scope="col">Handle</th> -->
@@ -67,7 +69,7 @@
           'error': institution.IdRequest == undefined ,
           'success': institution.IdRequest != undefined 
         }">{{institution.Institutionname || "null"}}</td>
-        <td [ngClass]="{'error': !institution.status, 'success': institution.status}">{{institution.status || "null"}}</td>
+        <td [ngClass]="{'error': !institution.Accepted, 'success': institution.Accepted}">{{institution.Accepted || "null"}}</td>
         <!-- <th scope="row">{{i}}</th> -->
         <!-- <td *ngIf="i>0">{{row[0] || "null"}}</td>
         <td *ngIf="i >0">{{row[9] || "null"}}</td>
@@ -88,4 +90,14 @@
   </table>
 
 
+</div>
+
+
+
+<div class="containerGray" *ngIf="((rest)==0 || (WoAcept)==0) && viewinfo">
+  <div class="containerInfo">
+    <h1 *ngIf="(rest)==0 " class="animate__animated  animate__heartBeat">All institutions <span style="color: rgb(90, 153, 248);">created</span> </h1>
+    <h1 *ngIf="(WoAcept)==0 " class="animate__animated  animate__heartBeat">All institutions <span class="success">accepted</span> </h1>
+    <button (click)="viewinfo = false" type="button" class="btn btn-outline-light btn-lg btn-block animate__animated animate__bounce animate__delay-2s" style="margin-top: 100px;">Close</button>
+  </div>
 </div>

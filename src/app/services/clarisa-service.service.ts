@@ -124,7 +124,7 @@ export class ClarisaServiceService {
     })
  
     const params = new HttpParams()
-       .set('accept', "false")
+       .set('accept', "true")
        .set('justification'," ");
     
   

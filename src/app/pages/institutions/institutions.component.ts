@@ -10,12 +10,17 @@ declare var $;
   styleUrls: ["./institutions.component.css"],
 })
 export class InstitutionsComponent implements OnInit {
-  institutionsget:any;
+  institutionsget: any;
+  viewinfo=false;
   rows: [][];
   institutions = [];
+  // institutionsWithCode = [];
   crp = 'RTB';
   rest = 0;
-  WoAcept=0;
+  WoAcept = 0;
+  restActive = true;
+  WoAceptActive = true;
+  autoGenerateFile = true;
   test = {
     name: "test2",
     acronym: "test2",
@@ -26,8 +31,29 @@ export class InstitutionsComponent implements OnInit {
     externalUserName: "test2",
     externalUserComments: "test2",
   };
-  constructor(private _clarisaService: ClarisaServiceService) { }
-  rejectAllGet(){
+  constructor(private _clarisaService: ClarisaServiceService) { 
+    // var obj = { name: "John", age: 30, city: "New York" };
+    // this.pushStorage(obj);
+    
+
+    // console.log(JSON.parse(localStorage.getItem('institutions')));
+  }
+
+ pushStorage(json){
+
+  if(!localStorage.getItem('institutions')){
+    let newStorage = [];
+    localStorage.setItem('institutions', JSON.stringify(newStorage));
+  }
+
+  let jsonTotal= JSON.parse(localStorage.getItem('institutions'));
+  jsonTotal.push(json);
+  var myJSON = JSON.stringify(jsonTotal);
+  localStorage.setItem('institutions', myJSON);
+  
+ }
+
+  rejectAllGet() {
     this.institutionsget.forEach((inst) => {
       // console.log(inst.id);
       this.reject(inst.id);
@@ -35,9 +61,9 @@ export class InstitutionsComponent implements OnInit {
   }
   ngOnInit() {
     setInterval(
-      ()=>{ 
+      () => {
         this.validateRest();
-  }, 1000);
+      }, 1000);
     this._clarisaService.getInstitutionsRequestsByCgiarEntity(this.crp).subscribe((resp) => {
       console.log(resp);
       this.institutionsget = resp;
@@ -67,6 +93,9 @@ export class InstitutionsComponent implements OnInit {
   }
 
   onFileChange(evt: any) {
+    this.restActive = true;
+    this.WoAceptActive = true;
+    this.autoGenerateFile = true;
     // console.log(evt.target.files);
     const target: DataTransfer = <DataTransfer>evt.target;
 
@@ -76,6 +105,7 @@ export class InstitutionsComponent implements OnInit {
 
     reader.onload = (e: any) => {
       this.institutions = [];
+      // this.institutionsWithCode = [];
       this.rows = [];
       const bstr: string = e.target.result;
       const wb: XLSX.WorkBook = XLSX.read(bstr, { type: "binary" });
@@ -109,16 +139,31 @@ export class InstitutionsComponent implements OnInit {
           Acronym: inst[2],
           Website: inst[3],
           InstitutionType: inst[4],
-          Iso: inst[5],
+          ISOAlpha2: inst[5],
           UserRequest: inst[6],
-          clean1: inst[7],
-          clean2: inst[8],
+          send: inst[7],
+          Accepted: inst[8],
           Institutiontypecode: inst[9],
           json: inst[10],
-          status: inst[11],
+          InstitutionId: ''
+
         };
         // console.log(inst);
         this.institutions.push(institution);
+
+
+        // let institutionWithId = {
+        //   IdRequest: inst[0],
+        //   Institutionname: inst[1],
+        //   Acronym: inst[2],
+        //   Website: inst[3],
+        //   InstitutionId: ''
+
+        // };
+
+
+
+        // this.institutionsWithCode.push(institutionWithId);
       }
       first = true;
     });
@@ -131,75 +176,84 @@ export class InstitutionsComponent implements OnInit {
     // console.log(this.institutions);
   }
   postAllInstitutions() {
-   
-      let timeseg=0;
- 
+
+    let timeseg = 0;
+    let cont=0;
     this.institutions.forEach((inst) => {
       timeseg++;
       setTimeout(() => {
-      let test = {
-        name: this.strjson(inst.json).name,
-        acronym: this.strjson(inst.json).acronym,
-        websiteLink: this.strjson(inst.json).websiteLink,
-        institutionTypeCode: this.strjson(inst.json).institutionTypeCode,
-        hqCountryIso: this.strjson(inst.json).hqCountryIso,
-        externalUserMail: this.strjson(inst.json).externalUserMail,
-        externalUserName: this.strjson(inst.json).externalUserName,
-        externalUserComments: this.strjson(inst.json).externalUserComments,
-      };
+        let test = {
+          name: this.strjson(inst.json).name,
+          acronym: this.strjson(inst.json).acronym,
+          websiteLink: this.strjson(inst.json).websiteLink,
+          institutionTypeCode: this.strjson(inst.json).institutionTypeCode,
+          hqCountryIso: this.strjson(inst.json).hqCountryIso,
+          externalUserMail: this.strjson(inst.json).externalUserMail,
+          externalUserName: this.strjson(inst.json).externalUserName,
+          externalUserComments: this.strjson(inst.json).externalUserComments,
+        };
 
-      // console.log(this.strjson(inst.json));
-      if (inst.IdRequest == undefined || inst.IdRequest == "" || inst.IdRequest == " ") {
-        let random = Math.floor(Math.random() * (10 - 0)) + 0;
-        // console.log(random);
-        // if (random == 0) {
-        //   inst.IdRequest = undefined;
-        // } else {
-        //   inst.IdRequest = random;
-        // }
-        // if (random != 0) {
-        if (true) {
-        ///////////////
-        this._clarisaService
-          .createInstitutions(this.crp, test)
-          .subscribe((resp) => {
-            console.log(resp);
-            inst.IdRequest = resp.id;
-            console.log(resp.id + " subido");
-            this.validateRest();
-
-            let random2 = Math.floor(Math.random() * (10 - 0)) + 0;
-            // if (random2 != 0) {
-              if (true) {
-              
-              //////////////////
-            console.log("rechazando: "+inst.IdRequest);
+        // console.log(this.strjson(inst.json));
+        if (inst.IdRequest == undefined || inst.IdRequest == "" || inst.IdRequest == " ") {
+          let random = Math.floor(Math.random() * (10 - 0)) + 0;
+          // console.log(random);
+          // if (random == 0) {
+          //   inst.IdRequest = undefined;
+          // } else {
+          //   inst.IdRequest = random;
+          // }
+          // if (random != 0) {
+          if (true) {
+            ///////////////
             this._clarisaService
-            .AcceptOrRejectInstitutions(this.crp, "", inst.IdRequest)
-            .subscribe((resp) => {
-              this.validateRest();
-              console.log(resp);
-              console.log(inst.IdRequest +" rechazado: ");
-              inst.status = true;
-            },(err)=>{
-              this.validateRest();
-            });
-            ////////////////
-}
+              .createInstitutions(this.crp, test)
+              .subscribe((resp) => {
+                console.log(resp);
+                inst.IdRequest = resp.id;
+                // console.log(this.institutionsWithCode);
+                // this.institutionsWithCode[cont].IdRequest = resp.id;
+                inst.send = "Yes";
+                console.log(resp.id + " subido");
+                this.validateRest();
+                
+                let random2 = Math.floor(Math.random() * (2 - 0)) + 0;
+                // if (random2 != 0) {
+                if (random2 != 0) {
+
+                  //////////////////
+                  console.log("rechazando: " + inst.IdRequest);
+                  this._clarisaService
+                    .AcceptOrRejectInstitutions(this.crp, "", inst.IdRequest)
+                    .subscribe((resp) => {
+                      this.validateRest();
+                      console.log(resp);
+                      console.log("Id Institution: "+resp.institutionDTO.code);
+                      inst.InstitutionId = resp.institutionDTO.code;
+                      // this.institutionsWithCode[cont].InstitutionId = resp.institutionDTO.code;
+                      
+                      console.log(inst.IdRequest + " Acptado: ");
+                      inst.Accepted = "Yes";
+                      this.pushStorage(inst);
+                    }, (err) => {
+                      this.validateRest();
+                    });
+                  ////////////////
+                }
 
 
-          },(err)=>{
-            this.validateRest();
-          });
+              }, (err) => {
+                this.validateRest();
+              });
+              cont++;
+            //////////////
+          }
 
-          //////////////
+        } else {
+          // console.log("Ya se envío");
+          // console.log(test.name);
         }
 
-      } else {
-        // console.log("Ya se envío");
-        // console.log(test.name);
-      }
-    }, timeseg*500);
+      }, timeseg * 100);
 
 
     });
@@ -209,48 +263,136 @@ export class InstitutionsComponent implements OnInit {
 
   validateRest() {
     this.rest = 0;
-    this.WoAcept=0;
+    this.WoAcept = 0;
     this.institutions.forEach((inst) => {
+
       if (inst.IdRequest == undefined || inst.IdRequest == "" || inst.IdRequest == " ") {
         this.rest++;
+
       }
-      if (inst.status == undefined || inst.status == "" || inst.status == " ") {
+      if (inst.Accepted == undefined || inst.Accepted == "" || inst.Accepted == " ") {
         this.WoAcept++;
       }
+      if(this.rest==0 && this.restActive){
+        this.viewinfo = true;
+        this.restActive = false;
+      }
+      if(this.WoAcept==0 && this.WoAceptActive){
+        this.viewinfo = true;
+        this.WoAceptActive = false;
+        this.exportFile();
+      }
+    //   if(!this.WoAceptActive  && this.autoGenerateFile){
+     
+    //  this.autoGenerateFile = false;
+    //   }
     });
   }
   AceptAllInstitutions() {
-   
+
     this.institutions.forEach((inst) => {
 
-      if (inst.status == undefined && inst.IdRequest != undefined) {
-  
+      if (inst.Accepted == undefined && inst.IdRequest != undefined) {
 
-       console.log("rechazando: "+inst.IdRequest);
+
+        console.log("rechazando: " + inst.IdRequest);
         this._clarisaService
-        .AcceptOrRejectInstitutions(this.crp, "", inst.IdRequest)
-        .subscribe((resp) => {
-          console.log(resp);
-          console.log(inst.IdRequest +" rechazado: ");
-          inst.status = true;
-        });
+          .AcceptOrRejectInstitutions(this.crp, "", inst.IdRequest)
+          .subscribe((resp) => {
+            console.log(resp);
+            console.log("Id Institution: "+resp.institutionDTO.code);
+                      inst.InstitutionId = resp.institutionDTO.code;
+            console.log(inst.IdRequest + " rechazado: ");
+            inst.Accepted = 'Yes';
+            this.pushStorage(inst);
+          });
 
       }
 
     });
     console.log(this.institutions);
   }
+  exportFilefromStorage(){
+  
+          /* generate a worksheet original with code institutions*/
+          var wsIns = XLSX.utils.json_to_sheet(  JSON.parse(localStorage.getItem('institutions')));
 
+          /* add to workbook */
+          var wbIns = XLSX.utils.book_new();
+          XLSX.utils.book_append_sheet(wbIns, wsIns, "Institutions");
+    
+          /* write workbook and force a download */
+          XLSX.writeFile(wbIns, "InstitutionsWithCode.xlsx");
+  }
   exportFile() {
-    /* generate a worksheet */
-    var ws = XLSX.utils.json_to_sheet(this.institutions);
+    let institutionsOriginal = [] ;
+    let institutionswithInstCode = [] ;
+    this.institutions.forEach((inst) => {
+      let institution = {
+        IdRequest: inst.IdRequest,
+        Institutionname: inst.Institutionname,
+        Acronym: inst.Acronym,
+        Website: inst.Website,
+        InstitutionType: inst.InstitutionType,
+        ISOAlpha2: inst.ISOAlpha2,
+        UserRequest: inst.UserRequest,
+        send: inst.send,
+        Accepted: inst.Accepted,
+        Institutiontypecode: inst.Institutiontypecode,
+        json: inst.json
+  
+      };
+ 
+      institutionsOriginal.push(institution);
+    });
+
+
+    this.institutions.forEach((inst) => {
+      let institution = {
+        IdRequest: inst.IdRequest,
+        Institutionname: inst.Institutionname,
+        Acronym: inst.Acronym,
+        Website: inst.Website,
+        InstitutionId: inst.InstitutionId
+
+  
+      };
+ 
+      institutionswithInstCode.push(institution);
+    });
+    
+
+
+    // console.log(inst);
+    
+    
+
+    /* generate a worksheet original with code*/
+    var ws = XLSX.utils.json_to_sheet(institutionsOriginal);
 
     /* add to workbook */
     var wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Institutions");
 
     /* write workbook and force a download */
-    XLSX.writeFile(wb, "sheetjs.xlsx");
+    XLSX.writeFile(wb, "Institutions.xlsx");
+
+    setTimeout(() => {
+      /* generate a worksheet original with code institutions*/
+      var wsIns = XLSX.utils.json_to_sheet(institutionswithInstCode);
+
+      /* add to workbook */
+      var wbIns = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wbIns, wsIns, "Institutions");
+
+      /* write workbook and force a download */
+      XLSX.writeFile(wbIns, "InstitutionsWithCode.xlsx");
+
+    }, 3000);
+
+
+
+
   }
 
   strjson(json) {
