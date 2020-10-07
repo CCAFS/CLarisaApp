@@ -17,6 +17,7 @@ export class InstitutionsComponent implements OnInit {
   // institutionsWithCode = [];
   crp = 'RTB';
   rest = 0;
+  totalInstCode = 0;
   WoAcept = 0;
   restActive = true;
   WoAceptActive = true;
@@ -264,7 +265,22 @@ export class InstitutionsComponent implements OnInit {
   validateRest() {
     this.rest = 0;
     this.WoAcept = 0;
+    this.totalInstCode=0;
     this.institutions.forEach((inst) => {
+
+      if(inst.InstitutionId != ''){
+        this.totalInstCode++;
+        if(this.totalInstCode==this.institutions.length){
+          if (this.autoGenerateFile) {
+            // alert("Campos completos");
+            this.autoGenerateFile=false;
+            this.exportFile();
+            this.viewinfo = true;
+            this.WoAceptActive = false;
+          }
+           
+        }
+      }
 
       if (inst.IdRequest == undefined || inst.IdRequest == "" || inst.IdRequest == " ") {
         this.rest++;
@@ -277,11 +293,10 @@ export class InstitutionsComponent implements OnInit {
         this.viewinfo = true;
         this.restActive = false;
       }
-      if(this.WoAcept==0 && this.WoAceptActive){
-        this.viewinfo = true;
-        this.WoAceptActive = false;
-        this.exportFile();
-      }
+      // if(this.WoAcept==0 && this.WoAceptActive){
+ 
+        
+      // }
     //   if(!this.WoAceptActive  && this.autoGenerateFile){
      
     //  this.autoGenerateFile = false;
@@ -289,9 +304,11 @@ export class InstitutionsComponent implements OnInit {
     });
   }
   AceptAllInstitutions() {
-
+    let timeseg = 0;
+   
+    
     this.institutions.forEach((inst) => {
-
+      setTimeout(() => {
       if (inst.Accepted == undefined && inst.IdRequest != undefined) {
 
 
@@ -308,7 +325,7 @@ export class InstitutionsComponent implements OnInit {
           });
 
       }
-
+    }, timeseg * 100);
     });
     console.log(this.institutions);
   }
@@ -322,7 +339,7 @@ export class InstitutionsComponent implements OnInit {
           XLSX.utils.book_append_sheet(wbIns, wsIns, "Institutions");
     
           /* write workbook and force a download */
-          XLSX.writeFile(wbIns, "InstitutionsWithCode.xlsx");
+          XLSX.writeFile(wbIns, "Institutions with code from storage.xlsx");
   }
   exportFile() {
     let institutionsOriginal = [] ;
@@ -386,7 +403,7 @@ export class InstitutionsComponent implements OnInit {
       XLSX.utils.book_append_sheet(wbIns, wsIns, "Institutions");
 
       /* write workbook and force a download */
-      XLSX.writeFile(wbIns, "InstitutionsWithCode.xlsx");
+      XLSX.writeFile(wbIns, "Institutions with code.xlsx");
 
     }, 3000);
 

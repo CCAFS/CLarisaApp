@@ -4,16 +4,23 @@
 
 
 
-  <button *ngIf="institutions[0]" (click)="postAllInstitutions()" type="button" class="btn  btn-outline-dark">Post all
+  <button  *ngIf="institutions[0]" (click)="postAllInstitutions()" type="button" class="btn  btn-outline-dark animate__animated  animate__backInDown">Post all
     institutions</button>
-    <button *ngIf="institutions[0]" (click)="AceptAllInstitutions()" type="button" class="excel btn btn-outline-info">Acept All</button>
-  <button *ngIf="institutions[0]" (click)="exportFile()" type="button" class="excel btn btn-outline-success">Generate
+    <button  *ngIf="institutions[0]" (click)="AceptAllInstitutions()" type="button" class="excel btn btn-outline-info animate__animated  animate__backInDown">
+      Accept remaining</button>
+  <button  *ngIf="institutions[0]" (click)="exportFile()" type="button" class="excel btn btn-outline-success animate__animated  animate__backInDown">Generate
     Excel</button>
   
   <!-- <button (click)="reject()" type="button" class="excel btn btn-outline-info">Reject one</button> -->
-  <button (click)="exportFilefromStorage()" type="button" class="excel btn btn-outline-danger">Export File fromStorage</button>
+  <button  (click)="exportFilefromStorage()" type="button" class="excel btn btn-outline-warning animate__animated  animate__backInDown">Generate
+    Excel from storage</button>
   <!-- <button (click)="rejectAllGet()" type="button" class="excel btn btn-outline-danger">Reject All on get</button> -->
-  <div class="row">
+
+
+
+
+
+  <!-- <div class="row">
     <div class="col-sm">
       <h1 style="text-align: center;">Institutions
 
@@ -35,9 +42,74 @@
         <span *ngIf="institutions[0]" class="success">  -  accepted: {{institutions.length - WoAcept}}</span></p>
     </div>
 
+  </div> -->
+  
+
+
+
+  
+ 
+  
+  <div class="row input-group mb-3 " style="margin-bottom: 10px;" *ngIf="institutions[0]" >
+
+
+
+    <div class="col-12 animate__animated animate__bounceInDown" style="margin: 10px 0px;">
+      <ul class="list-group">
+        <li class="list-group-item list-group-item-dark d-flex justify-content-between align-items-center">
+          Total Institutions
+          <span class="badge badge-primary badge-pill">{{institutions.length}}</span>
+        </li>
+      </ul>
+    </div>
+
+
+    <div class="col-6 animate__animated  animate__bounceInLeft">
+      <ul class="list-group">
+        <!-- <li class="list-group-item d-flex justify-content-between align-items-center">
+          Total Institutions
+          <span class="badge badge-primary badge-pill">{{institutions.length}}</span>
+        </li> -->
+        <li class="list-group-item list-group-item-danger d-flex justify-content-between align-items-center">
+          Without creating
+          <span class="badge badge-danger badge-pill">{{rest}}</span>
+        </li>
+        <li class="list-group-item list-group-item-success d-flex justify-content-between align-items-center">
+          With code
+          <span class="badge badge-success badge-pill">{{institutions.length - rest}}</span>
+        </li>
+      </ul>
+    </div>
+    <div class="col-6 animate__animated  animate__bounceInRight">
+    
+      <ul class="list-group">
+        <!-- <li class="list-group-item d-flex justify-content-between align-items-center">
+          Total Institutions
+          <span class="badge badge-primary badge-pill">{{institutions.length}}</span>
+        </li> -->
+        <li class="list-group-item list-group-item-danger d-flex justify-content-between align-items-center">
+          without accepting 
+          <span class="badge badge-danger badge-pill">{{WoAcept}}</span>
+        </li>
+        <li class="list-group-item list-group-item-success d-flex justify-content-between align-items-center">
+          Accepted
+          <span class="badge badge-success badge-pill">{{institutions.length - WoAcept}}</span>
+        </li>
+      </ul>
+
+    </div>
+
   </div>
 
-  <div class="input-group mb-3">
+
+
+
+
+
+
+
+
+  <div class="input-group mb-3 animate__animated  animate__shakeY animate__delay-1s" style="margin-top: 10px;">
     <div class="input-group-prepend">
       <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
     </div>
@@ -49,12 +121,12 @@
     </div>
   </div>
 
-  <table class="table">
+  <table class="table animate__animated animate__fadeInTopRight">
     <thead>
       <tr>
         <!-- <th scope="col">#</th> -->
-        <th scope="col">IdRequest</th>
-        <th scope="col">Institutionname</th>
+        <th scope="col">Id request</th>
+        <th scope="col">Institution name</th>
         <th scope="col">Accepted</th>
         <!-- <th scope="col">Json view</th>
         <th scope="col">is Json</th> -->
@@ -62,14 +134,14 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let institution of institutions; let i = index">
+      <tr *ngFor="let institution of institutions; let i = index" class=" animate__animated " [ngClass]="{'animate__slideInLeft': i%2 ==0,'animate__slideInRight': i%2 !=0}" >
         <td>{{institution.IdRequest || "null"}}</td>
-        <td [ngClass]="
+        <td class="animate__animated" [ngClass]="
         {
           'error': institution.IdRequest == undefined ,
-          'success': institution.IdRequest != undefined 
+          'success animate__zoomIn': institution.IdRequest != undefined 
         }">{{institution.Institutionname || "null"}}</td>
-        <td [ngClass]="{'error': !institution.Accepted, 'success': institution.Accepted}">{{institution.Accepted || "null"}}</td>
+        <td class="animate__animated" [ngClass]="{'error': !institution.Accepted, 'success animate__zoomIn': institution.Accepted}">{{institution.Accepted || "null"}}</td>
         <!-- <th scope="row">{{i}}</th> -->
         <!-- <td *ngIf="i>0">{{row[0] || "null"}}</td>
         <td *ngIf="i >0">{{row[9] || "null"}}</td>
