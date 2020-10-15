@@ -219,7 +219,7 @@ export class InstitutionsComponent implements OnInit {
                 
                 let random2 = Math.floor(Math.random() * (2 - 0)) + 0;
                 // if (random2 != 0) {
-                if (random2 != 0) {
+                if (true) {
 
                   //////////////////
                   console.log("rechazando: " + inst.IdRequest);
