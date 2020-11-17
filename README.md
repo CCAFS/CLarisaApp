@@ -1,27 +1,27 @@
 # ClarisaApp
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.1.4.
+## Previous installations
+Install [Node.js](https://nodejs.org/) to use npm.
 
+Install project dependencies with npm at the root of the project
+```sh
+$ cd ClarisaApp
+$ npm install
+```
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Run `npm start` for a dev server to use proxy.conf. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-## Code scaffolding
+## Interface instructions
+- #### Load .xlsx  file "Excel"
+    Cargar archivo .xlsx.
+- #### Post all institutions
+    Una vez cargado el archivo .xlsx, esta funcionalidad permite subir instituciones y aceptarlas a la misma vez.
+    Muchas veces el servidor responde con "[500 Internal Server Error](https://developer.mozilla.org/es/docs/Web/HTTP/Status/500)" por lo que se puede presionar nuevamente Post all institutions para volver a subir la instituciones restantes sin enviar las que ya se subieron, siempre y cuando el archivo tenga registro de si tiene instituciones subidas, en pocas palabras esto quiere decir que la instituciones que tienen codigo en el archivo de excel no se vuelven a enviar por condiciones en el codigo del proyecto.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- ####  Accept remaining
+    Esta funcionalidad permite aceptar las instituciones que no quedaron aceptadas por el mismo "[500 Internal Server Error](https://developer.mozilla.org/es/docs/Web/HTTP/Status/500)" mencionado anteriormente ya que pueden surgir que multiples instituciones se suban pero no se acepten por el error 500.
 
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+- ####  Excel from storage
+   Esta funcionalidad es de tipo emergencia ya que puede ocurrir que por equivocación se cierre el navegador sin haber generado el archivo de excel y no quede registro de los diferentes códigos que se obtienen, por lo que esta información quedará guardado en la memoria del navegador para poder descargarla al abrir nuevamente el navegador.
