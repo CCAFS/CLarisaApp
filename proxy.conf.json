@@ -1,6 +1,6 @@
 {
   "/api/*": {
-    "target": "https://clarisa.cgiar.org/",
+    "target": "https://localhost:8443/marlo-web/",
     "secure": false,
     "logLevel": "debug"
   }
