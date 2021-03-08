@@ -5,11 +5,13 @@ import { HomePageComponent } from './pages/home-page/home-page.component';
 import { InnovationsPageComponent } from './pages/innovations-page/innovations-page.component';
 import { CgiarEntityPageComponent } from './pages/cgiar-entity-page/cgiar-entity-page.component';
 import { InstitutionsComponent } from './pages/institutions/institutions.component';
+import { PublicationsComponent } from './pages/publications/publications.component';
 
 const routes: Routes = [
   { path: '', component: InstitutionsComponent },
   { path: 'home', component: HomePageComponent },
   { path: 'institutions', component: InstitutionsComponent },
+  { path: 'publications', component: PublicationsComponent },
   { path: 'publications/:entityAcronym', component: CgiarEntityPageComponent },
   { path: 'publications/:entityAcronym/addInnovation', component: InnovationsPageComponent },
   { path: 'publications/:entityAcronym/innovation/:id', component: InnovationsPageComponent },

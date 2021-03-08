@@ -20,6 +20,7 @@ import { HeaderComponent } from './shared/header/header.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import { InstitutionsComponent } from './pages/institutions/institutions.component';
 import { InterceptorService } from './interceptors/interceptor.service';
+import { PublicationsComponent } from './pages/publications/publications.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { InterceptorService } from './interceptors/interceptor.service';
     CgiarEntityPageComponent,
     HeaderComponent,
     FooterComponent,
-    InstitutionsComponent
+    InstitutionsComponent,
+    PublicationsComponent
   ],
   imports: [
     BrowserModule,
