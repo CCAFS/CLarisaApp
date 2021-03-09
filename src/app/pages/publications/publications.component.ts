@@ -14,7 +14,13 @@ export class PublicationsComponent implements OnInit {
   viewinfo = false;
   rows: [][];
   publications: Array<Publication> = [];
-  // publicationsWithCode = [];
+  selectedOption : String;
+  printedOption: Number;
+  options = [
+    { name : "2021", value: 2021 },
+    { name : "2020", value: 2020 },
+    { name : "2019", value: 2019 },
+  ]
   crp = 'RTB';
   rest = 0;
   totalInstCode = 0;
@@ -80,6 +86,8 @@ export class PublicationsComponent implements OnInit {
   }
 
   onFileChange(evt: any) {
+    this.printedOption = +this.selectedOption;
+    console.log("Valor impreso", this.printedOption)
     this.restActive = true;
     this.WoAceptActive = true;
     this.autoGenerateFile = true;
@@ -128,7 +136,7 @@ export class PublicationsComponent implements OnInit {
           npages: pub[14],
           phase: {
             name: "AR",
-            year: 0,
+            year: this.printedOption,
           },
           title: pub[2],
           volume: pub[12],
