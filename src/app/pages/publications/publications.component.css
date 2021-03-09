@@ -1,0 +1,32 @@
+.container {padding:20px;}
+.form-control {width:120px;}
+.popover {max-width:400px;}
+
+button.excel{
+    margin-right: 10px;
+}
+
+.error{
+color: #f44336;
+}
+
+.success{
+color: #4caf50 ;
+}
+
+.containerGray{
+    position: fixed;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.671);
+    width: 100vw;
+    height: 100vh;
+    z-index: 100;
+    display: flex;align-items: center;
+    justify-content: center;
+    color: white;
+    
+}
+
+.containerGray h1{
+    font-size: 5em;
+}
