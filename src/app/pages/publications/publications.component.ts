@@ -16,28 +16,34 @@ export class PublicationsComponent implements OnInit {
   publications: Array<Publication> = [];
   selectedOption : String;
   printedOption: Number;
+  selectedCRP : String;
+  printedCRP: String;
   options = [
     { name : "2021", value: 2021 },
     { name : "2020", value: 2020 },
     { name : "2019", value: 2019 },
   ]
-  crp = 'RTB';
+  optionsCRP = [
+    { name : "Wheat", value: "Wheat" },
+    { name : "WLE", value: "WLE" },
+    { name : "Livestock", value: "Livestock" },
+    { name : "Maize", value: "Maize" },
+    { name : "CCAFS", value: "CCAFS" },
+    { name : "RTB", value: "RTB" },
+    { name : "PIM", value: "PIM" },
+    { name : "Rice", value: "Rice" },
+    { name : "Fish", value: "Fish" },
+    { name : "A4NH", value: "A4NH" },
+    { name : "FTA", value: "FTA" },
+    { name : "GLDC", value: "GLDC" },
+  ]
+  phaseName: String = "AR";
   rest = 0;
   totalInstCode = 0;
   WoAcept = 0;
   restActive = true;
   WoAceptActive = true;
   autoGenerateFile = true;
-  test = {
-    name: "test2",
-    acronym: "test2",
-    websiteLink: "test2.com",
-    institutionTypeCode: "3",
-    hqCountryIso: "CO",
-    externalUserMail: "test@gmail.com",
-    externalUserName: "test2",
-    externalUserComments: "test2",
-  };
 
   constructor(private _clarisaService: ClarisaServiceService) {}
 
@@ -52,46 +58,19 @@ export class PublicationsComponent implements OnInit {
     localStorage.setItem('publications', myJSON);
   }
 
-  rejectAllGet() {
-    this.publicationsget.forEach((inst) => {
-      this.reject(inst.id);
-    })
-  }
-
   ngOnInit() {
-    setInterval(
-      () => {
-        this.validateRest();
-      }, 1000);
-    this._clarisaService.getInstitutionsRequestsByCgiarEntity(this.crp).subscribe((resp) => {
-      console.log(resp);
-      this.publicationsget = resp;
-    });
-  }
-
-  reject(id) {
-    this._clarisaService
-      .AcceptOrRejectInstitutions(this.crp, "", id)
-      .subscribe((resp) => {
-        console.log(resp);
-      });
-  }
-
-  postInstitutions() {
-    this._clarisaService
-      .createInstitutions(this.crp, this.test)
-      .subscribe((resp) => {
-        console.log(resp);
-      });
+    // this._clarisaService.getPublications(this.printedCRP).subscribe((resp) => {
+    //   console.log(resp);
+    //   this.publicationsget = resp;
+    // });
   }
 
   onFileChange(evt: any) {
     this.printedOption = +this.selectedOption;
-    console.log("Valor impreso", this.printedOption)
+    this.printedCRP = this.selectedCRP;
     this.restActive = true;
     this.WoAceptActive = true;
     this.autoGenerateFile = true;
-    // console.log(evt.target.files);
     const target: DataTransfer = <DataTransfer>evt.target;
 
     if (target.files.length !== 1) throw new Error("cannot use multiple files");
@@ -100,7 +79,6 @@ export class PublicationsComponent implements OnInit {
 
     reader.onload = (e: any) => {
       this.publications = [];
-      // this.publicationsWithCode = [];
       this.rows = [];
       const bstr: string = e.target.result;
       const wb: XLSX.WorkBook = XLSX.read(bstr, { type: "binary" });
@@ -113,7 +91,6 @@ export class PublicationsComponent implements OnInit {
       this.structureJson(this.rows);
     };
     reader.readAsBinaryString(target.files[0]);
-
   }
 
   structureJson(rows) {
@@ -123,7 +100,6 @@ export class PublicationsComponent implements OnInit {
       if (first) {
         coide++;
         let publication: Publication = {
-          IDRequest: pub[1],
           articleURL: pub[11],
           authorList: [],
           authors: pub[5],
@@ -135,7 +111,7 @@ export class PublicationsComponent implements OnInit {
           journal: pub[3],
           npages: pub[14],
           phase: {
-            name: "AR",
+            name: this.phaseName,
             year: this.printedOption,
           },
           title: pub[2],
@@ -153,103 +129,49 @@ export class PublicationsComponent implements OnInit {
   }
 
   postAllPublications() {
-    let timeseg = 0;
+    let timeseg = 3;
     let cont = 0;
     this.publications.forEach((pub) => {
       timeseg++;
       setTimeout(() => {
-        let test = {
-          name: this.strjson(pub.json).name,
-          acronym: this.strjson(pub.json).acronym,
-          websiteLink: this.strjson(pub.json).websiteLink,
-          institutionTypeCode: this.strjson(inst.json).institutionTypeCode,
-          hqCountryIso: this.strjson(inst.json).hqCountryIso,
-          externalUserMail: this.strjson(inst.json).externalUserMail,
-          externalUserName: this.strjson(inst.json).externalUserName,
-          externalUserComments: this.strjson(inst.json).externalUserComments,
+        let json = {
+          "articleURL": pub.articleURL,
+          "authorList": [],
+          "authors": pub.authors,
+          "doi": pub.doi,
+          "handle": pub.handle,
+          "isISIJournal": pub.isISIJournal,
+          "isOpenAccess": pub.isOpenAccess,
+          "issue": pub.issue,
+          "journal": pub.journal,
+          "npages": pub.npages,
+          "phase": {
+            "name": this.phaseName,
+            "year": this.printedOption,
+          },
+          "title": pub.title,
+          "volume": pub.volume,
+          "year": pub.year
         };
-        // console.log(this.strjson(inst.json));
-        if (pub.IDRequest == undefined || pub.IDRequest == "" || pub.IDRequest == " ") {
-          let random = Math.floor(Math.random() * (10 - 0)) + 0;
+
+        if (pub.id == undefined || pub.id == "" || pub.id == " ") {
           if (true) {
-            ///////////////
             this._clarisaService
-              .createInstitutions(this.crp, test)
+              .createPublication(this.printedCRP, json)
               .subscribe((resp) => {
-                console.log(resp);
-                pub.IDRequest = resp.id;
-                // console.log(this.publicationsWithCode);
-                // this.publicationsWithCode[cont].IdRequest = resp.id;
-                pub.send = "Yes";
+                console.log("resp", resp);
+                pub.id = resp.id;
                 console.log(resp.id + " subido");
-                this.validateRest();
-                let random2 = Math.floor(Math.random() * (2 - 0)) + 0;
-                // if (random2 != 0) {
-                if (true) {
-                  //////////////////
-                  console.log("rechazando: " + pub.IDRequest);
-                  this._clarisaService
-                    .AcceptOrRejectInstitutions(this.crp, "", pub.IDRequest)
-                    .subscribe((resp) => {
-                      this.validateRest();
-                      console.log(resp);
-                      console.log("Id Institution: " + resp.institutionDTO.code);
-                      pub.InstitutionId = resp.institutionDTO.code;
-                      console.log(pub.IDRequest + " Acptado: ");
-                      pub.Accepted = "Yes";
-                      this.pushStorage(pub);
-                    }, (err) => {
-                      this.validateRest();
-                    });
-                  ////////////////
-                }
               }, (err) => {
-                this.validateRest();
               });
             cont++;
-            //////////////
           }
         } else {
           // console.log("Ya se envío");
-          // console.log(test.name);
         }
       }, timeseg * 100);
     });
     console.log(this.publications);
-    this.validateRest();
-  }
-
-  validateRest() {
-    this.rest = 0;
-    this.WoAcept = 0;
-    this.totalInstCode = 0;
-    this.publications.forEach((pub) => {
-
-      if (pub.InstitutionId != '') {
-        this.totalInstCode++;
-        if (this.totalInstCode == this.publications.length) {
-          if (this.autoGenerateFile) {
-            // alert("Campos completos");
-            this.autoGenerateFile = false;
-            this.exportFile();
-            this.viewinfo = true;
-            this.WoAceptActive = false;
-          }
-
-        }
-      }
-
-      if (pub.IDRequest == undefined || pub.IDRequest == "" || pub.IDRequest == " ") {
-        this.rest++;
-      }
-      if (pub.Accepted == undefined || pub.Accepted == "" || pub.Accepted == " ") {
-        this.WoAcept++;
-      }
-      if (this.rest == 0 && this.restActive) {
-        this.viewinfo = true;
-        this.restActive = false;
-      }
-    });
   }
 
   exportFilefromStorage() {
@@ -269,7 +191,6 @@ export class PublicationsComponent implements OnInit {
     let publicationswithInstCode = [];
     this.publications.forEach((pub) => {
       let publication: Publication = {
-        IDRequest: pub.IDRequest,
         articleURL: pub.articleURL,
         authorList: [],
         authors: pub.authors,
@@ -281,8 +202,8 @@ export class PublicationsComponent implements OnInit {
         journal: pub.journal,
         npages: pub.npages,
         phase: {
-          name: "",
-          year: 0,
+          name: this.phaseName,
+          year: this.printedOption,
         },
         title: pub.title,
         volume: pub.volume,
@@ -290,18 +211,6 @@ export class PublicationsComponent implements OnInit {
       };
       publicationsOriginal.push(publication);
     });
-
-    this.publications.forEach((inst) => {
-      let institution = {
-        IdRequest: inst.IdRequest,
-        Institutionname: inst.Institutionname,
-        Acronym: inst.Acronym,
-        Website: inst.Website,
-        InstitutionId: inst.InstitutionId
-      };
-      publicationswithInstCode.push(institution);
-    });
-    // console.log(inst);
 
     /* generate a worksheet original with code*/
     var ws = XLSX.utils.json_to_sheet(publicationsOriginal);
@@ -312,19 +221,6 @@ export class PublicationsComponent implements OnInit {
 
     /* write workbook and force a download */
     XLSX.writeFile(wb, "Publications.xlsx");
-
-    setTimeout(() => {
-      /* generate a worksheet original with code publications*/
-      var wsIns = XLSX.utils.json_to_sheet(publicationswithInstCode);
-
-      /* add to workbook */
-      var wbIns = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wbIns, wsIns, "Publications");
-
-      /* write workbook and force a download */
-      XLSX.writeFile(wbIns, "Publications with code.xlsx");
-
-    }, 3000);
   }
 
   strjson(json) {

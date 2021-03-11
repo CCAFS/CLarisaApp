@@ -149,7 +149,7 @@ export class InstitutionsComponent implements OnInit {
           InstitutionId: ''
 
         };
-        // console.log(inst);
+        console.log(inst);
         this.institutions.push(institution);
 
 
@@ -193,7 +193,7 @@ export class InstitutionsComponent implements OnInit {
           externalUserName: this.strjson(inst.json).externalUserName,
           externalUserComments: this.strjson(inst.json).externalUserComments,
         };
-
+        console.log(test)
         // console.log(this.strjson(inst.json));
         if (inst.IdRequest == undefined || inst.IdRequest == "" || inst.IdRequest == " ") {
           let random = Math.floor(Math.random() * (10 - 0)) + 0;

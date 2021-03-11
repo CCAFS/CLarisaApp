@@ -105,10 +105,15 @@ export class ClarisaServiceService {
   }
 
   // Publications
-  createPublication(cgiarEntity:string, publication:any): Observable<any>{
+  createPublication(cgiarEntity:String, publication:any): Observable<any>{
     return this.postQuery(cgiarEntity + '/publications', publication).pipe(
       map(this.extractData));
   }
+
+  getPublications(cgiarEntity:String): Observable<any> {
+    return this.getQuery(cgiarEntity +'/publications').pipe(
+      map(this.extractData));
+  } 
 
   createInstitutions(cgiarEntity:string, Institution:any): Observable<any>{
     return this.postQuery(cgiarEntity + '/institutions/institution-requests', Institution).pipe(
