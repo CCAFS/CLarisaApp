@@ -36,6 +36,10 @@ export class PublicationsComponent implements OnInit {
     { name : "A4NH", value: "A4NH" },
     { name : "FTA", value: "FTA" },
     { name : "GLDC", value: "GLDC" },
+    { name : "BigData", value: "BigData" },
+    { name : "EiB", value: "EiB" },
+    { name : "Genebank", value: "Genebank" },
+    { name : "Gender", value: "Gender" }
   ]
   phaseName: String = "AR";
   rest = 0;
@@ -153,7 +157,7 @@ export class PublicationsComponent implements OnInit {
           "volume": pub.volume,
           "year": pub.year
         };
-
+        console.log("Creando post para registro "+cont);
         if (pub.id == undefined || pub.id == "" || pub.id == " ") {
           if (true) {
             this._clarisaService
@@ -163,6 +167,7 @@ export class PublicationsComponent implements OnInit {
                 pub.id = resp.id;
                 console.log(resp.id + " subido");
               }, (err) => {
+                console.log("resp",err);
               });
             cont++;
           }
@@ -191,6 +196,7 @@ export class PublicationsComponent implements OnInit {
     let publicationswithInstCode = [];
     this.publications.forEach((pub) => {
       let publication: Publication = {
+        id: pub.id,
         articleURL: pub.articleURL,
         authorList: [],
         authors: pub.authors,
