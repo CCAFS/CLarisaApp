@@ -164,8 +164,8 @@ export class PublicationsComponent implements OnInit {
               .createPublication(this.printedCRP, json)
               .subscribe((resp) => {
                 console.log("resp", resp);
-                pub.id = resp.id;
-                console.log(resp.id + " subido");
+                pub.id = resp;
+                console.log(resp + " subido");
               }, (err) => {
                 console.log("resp",err);
               });
