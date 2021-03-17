@@ -21,7 +21,7 @@ import { FooterComponent } from './shared/footer/footer.component';
 import { InstitutionsComponent } from './pages/institutions/institutions.component';
 import { InterceptorService } from './interceptors/interceptor.service';
 import { PublicationsComponent } from './pages/publications/publications.component';
-
+import { GrayLiteratureComponent } from './pages/grayLiterature/grayLiterature.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,7 +31,8 @@ import { PublicationsComponent } from './pages/publications/publications.compone
     HeaderComponent,
     FooterComponent,
     InstitutionsComponent,
-    PublicationsComponent
+    PublicationsComponent,
+    GrayLiteratureComponent
   ],
   imports: [
     BrowserModule,

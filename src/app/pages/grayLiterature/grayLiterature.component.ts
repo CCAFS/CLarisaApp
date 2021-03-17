@@ -1,19 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { ClarisaServiceService } from "../../services/clarisa-service.service";
 import * as XLSX from "xlsx";
-import { Publication } from "../../interfaces/PublicationI";
+import { GrayLiterature } from "../../interfaces/GrayLiterature";
 declare var $;
 
 @Component({
   selector: 'app-publications',
-  templateUrl: './publications.component.html',
-  styleUrls: ['./publications.component.css']
+  templateUrl: './grayLiterature.component.html',
+  styleUrls: ['./grayLiterature.component.css']
 })
-export class PublicationsComponent implements OnInit {
+export class GrayLiteratureComponent implements OnInit {
   publicationsget: any;
-  viewinfo = false;  
+  viewinfo = false;
   rows: [][];
-  publications: Array<Publication> = [];
+  publications: Array<GrayLiterature> = [];
   selectedOption : String;
   printedOption: Number;
   selectedCRP : String;
@@ -52,14 +52,14 @@ export class PublicationsComponent implements OnInit {
   constructor(private _clarisaService: ClarisaServiceService) {}
 
   pushStorage(json) {
-    if (!localStorage.getItem('publications')) {
+    if (!localStorage.getItem('grayLiterature')) {
       let newStorage = [];
-      localStorage.setItem('publications', JSON.stringify(newStorage));
+      localStorage.setItem('grayLiterature', JSON.stringify(newStorage));
     }
-    let jsonTotal = JSON.parse(localStorage.getItem('publications'));
+    let jsonTotal = JSON.parse(localStorage.getItem('grayLiterature'));
     jsonTotal.push(json);
     var myJSON = JSON.stringify(jsonTotal);
-    localStorage.setItem('publications', myJSON);
+    localStorage.setItem('grayLiterature', myJSON);
   }
 
   ngOnInit() {
@@ -103,25 +103,20 @@ export class PublicationsComponent implements OnInit {
     rows.forEach((pub) => {
       if (first) {
         coide++;
-        let publication: Publication = {
-          articleURL: pub[11],
-          authorList: [],
-          authors: pub[5],
-          doi: pub[9],
-          handle: pub[10],
-          isISIJournal: pub[7] == "Yes" ? true : false,
-          isOpenAccess: pub[8] == "Yes" ? true : false,
-          issue: pub[13],
-          journal: pub[3],
-          npages: pub[14],
+        let publication: GrayLiterature = {
+          articleURL: pub[9],
+          type: pub[3],
+          authorlist: [],
+          authors: pub[4],
+          doi: pub[7],
+          handle: pub[8],      
+          isOpenAccess: pub[6] == "Yes" ? true : false,   
           phase: {
             name: this.phaseName,
             year: this.printedOption,
           },
-          title: pub[2],
-          volume: pub[12],
-          year: pub[4],
-          accepted: false 
+          title: pub[2],          
+          year: pub[5]
         };
         this.publications.push(publication);
         console.log(this.publications);
@@ -141,28 +136,24 @@ export class PublicationsComponent implements OnInit {
       setTimeout(() => {
         let json = {
           "articleURL": pub.articleURL,
+          "type": pub.type,
           "authorList": [],
           "authors": pub.authors,
           "doi": pub.doi,
-          "handle": pub.handle,
-          "isISIJournal": pub.isISIJournal,
-          "isOpenAccess": pub.isOpenAccess,
-          "issue": pub.issue,
-          "journal": pub.journal,
-          "npages": pub.npages,
+          "handle": pub.handle,          
+          "isOpenAccess": pub.isOpenAccess,          
           "phase": {
             "name": this.phaseName,
             "year": this.printedOption,
           },
-          "title": pub.title,
-          "volume": pub.volume,
+          "title": pub.title,        
           "year": pub.year
         };
         console.log("Creando post para registro "+cont);
         if (pub.id == undefined || pub.id == "" || pub.id == " ") {
           if (true) {
             this._clarisaService
-              .createPublication(this.printedCRP, json)
+              .createPublicationOther(this.printedCRP, json)
               .subscribe((resp) => {
                 console.log("resp", resp);
                 pub.id = resp;
@@ -196,11 +187,11 @@ export class PublicationsComponent implements OnInit {
 
   exportFilefromStorage() {
     /* generate a worksheet original with code publications*/
-    var wsIns = XLSX.utils.json_to_sheet(JSON.parse(localStorage.getItem('publications')));
+    var wsIns = XLSX.utils.json_to_sheet(JSON.parse(localStorage.getItem('grayLiterature')));
 
     /* add to workbook */
     var wbIns = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wbIns, wsIns, "Publications");
+    XLSX.utils.book_append_sheet(wbIns, wsIns, "GrayLiterature");
 
     /* write workbook and force a download */
     XLSX.writeFile(wbIns, "Publications with code from storage.xlsx");
@@ -210,26 +201,21 @@ export class PublicationsComponent implements OnInit {
     let publicationsOriginal = [];
     let publicationswithInstCode = [];
     this.publications.forEach((pub) => {
-      let publication: Publication = {
+      let publication: GrayLiterature = {
         id: pub.id,
         articleURL: pub.articleURL,
-        authorList: [],
+        type: pub.type,
+        authorlist: [],
         authors: pub.authors,
         doi: pub.doi,
-        handle: pub.handle,
-        isISIJournal: pub.isISIJournal,
-        isOpenAccess: pub.isOpenAccess,
-        issue: pub.issue,
-        journal: pub.journal,
-        npages: pub.npages,
+        handle: pub.handle,        
+        isOpenAccess: pub.isOpenAccess,                
         phase: {
           name: this.phaseName,
           year: this.printedOption,
         },
-        title: pub.title,
-        volume: pub.volume,
-        year: pub.year,
-        accepted: pub.accepted
+        title: pub.title,        
+        year: pub.year
       };
       publicationsOriginal.push(publication);
     });
@@ -239,10 +225,10 @@ export class PublicationsComponent implements OnInit {
 
     /* add to workbook */
     var wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Publications");
+    XLSX.utils.book_append_sheet(wb, ws, "GrayLiterature");
 
     /* write workbook and force a download */
-    XLSX.writeFile(wb, "Publications.xlsx");
+    XLSX.writeFile(wb, "GrayLiterature.xlsx");
   }
 
   strjson(json) {

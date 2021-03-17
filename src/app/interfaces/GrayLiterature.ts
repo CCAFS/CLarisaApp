@@ -1,24 +1,20 @@
-export interface Publication {
+export interface GrayLiterature {
     id?: String;
+    type?: Number;
     articleURL?: String;
-    authorList?: Array<{
+    authorlist?: Array<{
         firstName?: String;
         lastName?: String;
     }>;
     authors?: String;
     doi?: String;
-    handle?: String;
-    isISIJournal?: Boolean;
+    handle?: String;    
     isOpenAccess?: Boolean;
-    issue?: String;
-    journal?: String;
-    npages?: String;
     phase: {
         name: String;
         year: Number;
     };
-    title?: String;
-    volume?: String;
+    title?: String;    
     year?: Number;
     accepted?: Boolean;
 }

@@ -6,12 +6,14 @@ import { InnovationsPageComponent } from './pages/innovations-page/innovations-p
 import { CgiarEntityPageComponent } from './pages/cgiar-entity-page/cgiar-entity-page.component';
 import { InstitutionsComponent } from './pages/institutions/institutions.component';
 import { PublicationsComponent } from './pages/publications/publications.component';
+import { GrayLiteratureComponent } from './pages/grayLiterature/grayLiterature.component';
 
 const routes: Routes = [
   { path: '', component: InstitutionsComponent },
   { path: 'home', component: HomePageComponent },
   { path: 'institutions', component: InstitutionsComponent },
   { path: 'publications', component: PublicationsComponent },
+  { path: 'grayLiterature', component: GrayLiteratureComponent },
   { path: 'publications/:entityAcronym', component: CgiarEntityPageComponent },
   { path: 'publications/:entityAcronym/addInnovation', component: InnovationsPageComponent },
   { path: 'publications/:entityAcronym/innovation/:id', component: InnovationsPageComponent },

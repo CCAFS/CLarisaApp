@@ -110,6 +110,11 @@ export class ClarisaServiceService {
       map(this.extractData));
   }
 
+  createPublicationOther(cgiarEntity:String, publication:any): Observable<any>{
+    return this.postQuery(cgiarEntity + '/publicationsOther', publication).pipe(
+      map(this.extractData));
+  }
+
   getPublications(cgiarEntity:String): Observable<any> {
     return this.getQuery(cgiarEntity +'/publications').pipe(
       map(this.extractData));
