@@ -44,12 +44,15 @@ export class ClarisaServiceService {
   }
 
   private getQuery(query:string){
-    let endQuery = endpoint + '/' + query;
+    //let endQuery = endpoint + '/' + query;
+    let endQuery =  'https://clarisa.cgiar.org/api/' + query;
     // if(this.proxyActive) endQuery = proxyURL + '/getProxy?url=' + encodeURIComponent(endQuery);
     console.log(endQuery);
     return this.http.get(endQuery);
     // return this.http.get(endQuery,httpOptions);
   }
+
+  
 
   private postQuery(query:string, data:any){
     let endQuery = endpoint + '/' + query;
@@ -104,10 +107,15 @@ export class ClarisaServiceService {
       map(this.extractData));
   }
 
+  getTest(): Observable<any> {
+    return this.http.get<any>('http://localhost:3000/api/clarisaApp/institution-all-requests');
+ }
+
   // Publications
   createPublication(cgiarEntity:String, publication:any): Observable<any>{
-    return this.postQuery(cgiarEntity + '/publications', publication).pipe(
-      map(this.extractData));
+    return this.http.post<any>('http://localhost:3000/api/clarisaApp/publications', publication)
+    //return this.postQuery(cgiarEntity + '/publications', publication).pipe(
+      //map(this.extractData));
   }
 
   createPublicationOther(cgiarEntity:String, publication:any): Observable<any>{
@@ -121,8 +129,9 @@ export class ClarisaServiceService {
   } 
 
   createInstitutions(cgiarEntity:string, Institution:any): Observable<any>{
-    return this.postQuery(cgiarEntity + '/institutions/institution-requests', Institution).pipe(
-      map(this.extractData));
+    //return this.postQuery(cgiarEntity + '/institutions/institution-requests', Institution).pipe(
+    //  map(this.extractData));
+    return this.http.post<any>('http://localhost:3000/api/clarisaApp/institution-requests',Institution);  
   }
 
   AcceptOrRejectInstitutions(cgiarEntity:string, Institution:any, InstitutionId:any): Observable<any>{
@@ -138,7 +147,8 @@ export class ClarisaServiceService {
        .set('justification'," ");
     
   
-     return this.http.post(endpoint+'/'+cgiarEntity + '/institutions/accept-institution-request/'+InstitutionId, Institution,{'headers':headers, 'params': params})
+     //return this.http.post(endpoint+'/'+cgiarEntity + '/institutions/accept-institution-request/'+InstitutionId, Institution,{'headers':headers, 'params': params})
+     return this.http.post('http://localhost:3000/api/clarisaApp/accept-institution-request/'+InstitutionId, Institution)
         
     // return this.http.post(endQuery, data).pipe(
     //   map(this.extractData));

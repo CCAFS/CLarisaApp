@@ -161,13 +161,15 @@ export class PublicationsComponent implements OnInit {
         console.log("Creando post para registro "+cont);
         if (pub.id == undefined || pub.id == "" || pub.id == " ") {
           if (true) {
+            setTimeout(() => {
+            }, 4000);
             this._clarisaService
               .createPublication(this.printedCRP, json)
               .subscribe((resp) => {
                 console.log("resp", resp);
-                pub.id = resp;
+                pub.id = resp.message;
                 pub.accepted = true;
-                console.log(resp + " subido");
+                console.log(resp.message + " subido");
               }, (err) => {
                 console.log("resp",err);
               });
@@ -183,6 +185,8 @@ export class PublicationsComponent implements OnInit {
     this.validateRest();
   }
 
+  
+
   validateRest() {
     this.rest=0;
     this.publications.forEach((pub) => {
@@ -193,6 +197,10 @@ export class PublicationsComponent implements OnInit {
       }
     });
  }
+
+  delay(ms: number) {
+  return new Promise( resolve => setTimeout(resolve, ms) );
+}
 
   exportFilefromStorage() {
     /* generate a worksheet original with code publications*/

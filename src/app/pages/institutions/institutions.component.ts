@@ -65,7 +65,8 @@ export class InstitutionsComponent implements OnInit {
       () => {
         this.validateRest();
       }, 1000);
-    this._clarisaService.getInstitutionsRequestsByCgiarEntity(this.crp).subscribe((resp) => {
+    //this._clarisaService.getInstitutionsRequestsByCgiarEntity(this.crp).subscribe((resp) => {
+      this._clarisaService.getTest().subscribe((resp) => {
       console.log(resp);
       this.institutionsget = resp;
     });
@@ -210,11 +211,11 @@ export class InstitutionsComponent implements OnInit {
               .createInstitutions(this.crp, test)
               .subscribe((resp) => {
                 console.log(resp);
-                inst.IdRequest = resp.id;
+                inst.IdRequest = resp.message.id;
                 // console.log(this.institutionsWithCode);
                 // this.institutionsWithCode[cont].IdRequest = resp.id;
                 inst.send = "Yes";
-                console.log(resp.id + " subido");
+                console.log(resp.message.id + " subido");
                 this.validateRest();
                 
                 let random2 = Math.floor(Math.random() * (2 - 0)) + 0;
@@ -228,8 +229,8 @@ export class InstitutionsComponent implements OnInit {
                     .subscribe((resp) => {
                       this.validateRest();
                       console.log(resp);
-                      console.log("Id Institution: "+resp.institutionDTO.code);
-                      inst.InstitutionId = resp.institutionDTO.code;
+                      console.log("Id Institution: "+resp.message.institutionDTO.code);
+                      inst.InstitutionId = resp.message.institutionDTO.code;
                       // this.institutionsWithCode[cont].InstitutionId = resp.institutionDTO.code;
                       
                       console.log(inst.IdRequest + " Acptado: ");
@@ -240,7 +241,6 @@ export class InstitutionsComponent implements OnInit {
                     });
                   ////////////////
                 }
-
 
               }, (err) => {
                 this.validateRest();

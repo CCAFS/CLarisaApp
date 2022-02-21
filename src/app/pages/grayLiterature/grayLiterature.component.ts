@@ -137,7 +137,7 @@ export class GrayLiteratureComponent implements OnInit {
         let json = {
           "articleURL": pub.articleURL,
           "type": pub.type,
-          "authorList": [],
+          "authorlist": [],
           "authors": pub.authors,
           "doi": pub.doi,
           "handle": pub.handle,          
@@ -215,7 +215,8 @@ export class GrayLiteratureComponent implements OnInit {
           year: this.printedOption,
         },
         title: pub.title,        
-        year: pub.year
+        year: pub.year,
+        accepted: pub.accepted
       };
       publicationsOriginal.push(publication);
     });

@@ -84,7 +84,7 @@
         }">{{publication.title || "null"}}</td>
         <td class="animate__animated"
           [ngClass]="{'error': !publication.accepted, 'success animate__zoomIn': publication.accepted}">
-          {{publication.accepted || "null"}}</td>
+          {{publication.accepted || "false"}}</td>
       </tr>
     </tbody>
   </table>
